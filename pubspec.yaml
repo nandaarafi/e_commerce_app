@@ -35,7 +35,7 @@ dependencies:
   intl: ^0.18.1
   logger: ^2.0.1
   url_launcher: ^6.1.12
-  flutter_native_splash: ^2.3.1
+  flutter_native_splash: ^2.3.10
   smooth_page_indicator: ^1.1.0
 
   # Icons
@@ -80,12 +80,12 @@ flutter:
     - assets/images/on_boarding_images/
     - assets/images/products/
     - assets/images/reviews/
-    - assets/icons/brands
-    - assets/icons/categories
-    - assets/icons/payment_methods
+    - assets/icons/brands/
+    - assets/icons/categories/
+    - assets/icons/payment_methods/
 
   fonts:
-   - family:
+   - family: Poppins
      fonts:
        - asset: assets/fonts/Poppins-Light.ttf
          weight: 300
@@ -98,7 +98,7 @@ flutter:
          style: italic
        - asset: assets/fonts/Poppins-Medium.ttf
          weight: 500
-       - asset: assets/fonts/Poppins-MediumItalic.
+       - asset: assets/fonts/Poppins-MediumItalic.ttf
          weight: 500
          style: italic
        - asset: assets/fonts/Poppins-SemiBold.ttf
