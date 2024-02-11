@@ -22,7 +22,7 @@ class EcomTexts {
   static const String forgetPassword = "Forget Password?";
   static const String signIn = "Sign In";
   static const String createAccountSub = "Don't have an account yet?";
-  static const String createAccount = "Create an Account";
+  static const String createAccount = "Create Account";
   static const String orSignInWith = "or sign in with";
   static const String orSignUpWith = "or sign up with";
   static const String iAgreeTo = "I agree to";
@@ -31,6 +31,10 @@ class EcomTexts {
   static const String verificationCode = "verificationCode";
   static const String resendEmail = "Resend Email";
   static const String resendEmailIn = "Resend email in";
+  static const String and = "and";
+  static const String submit = "Submit";
+  static const String done = "Done";
+  static const String eContinue = "Continue";
 
   // -- Authentication Headings
   static const String loginTitle = "Welcome back,";

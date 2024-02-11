@@ -6,6 +6,9 @@ import 'package:e_commerce_app/src/authentication/presentation/widgets/checkbox_
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../authentication/presentation/widgets/footer_form.dart';
+import '../screen/forget_password.dart';
+
 
 import '../../../../core/utils/constants/text_strings.dart';
 import '../../../../core/utils/helpers/helper_functions.dart';
@@ -25,10 +28,10 @@ class SignInScreen extends StatelessWidget {
           child: Column(
             children: [
               HeaderSignIn(dark: dark),
-              FormFieldSignIn(),
-              DividerSignIn(dark: dark),
-              const SizedBox(height: 24),
-              FooterSignIn(),
+              const FormFieldSignIn(),
+              DividerForm(dark: dark),
+              const SizedBox(height: EcomSizes.defaultSpace),
+              const FooterForm(),
             ],
           ),
         ),
@@ -37,44 +40,10 @@ class SignInScreen extends StatelessWidget {
   }
 }
 
-class FooterSignIn extends StatelessWidget {
-  const FooterSignIn({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(border: Border.all(color: EcomColors.grey), borderRadius: BorderRadius.circular(100)),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Image(
-                width: 24,
-                height: 24,
-                image: AssetImage(EcomImages.google)),
-          ),
-        ),
-        const SizedBox(width: EcomSizes.spaceBtwItems),
-        Container(
-          decoration: BoxDecoration(border: Border.all(color: EcomColors.grey), borderRadius: BorderRadius.circular(100)),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Image(
-                width: 24,
-                height: 24,
-                image: AssetImage(EcomImages.facebook)),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
-class DividerSignIn extends StatelessWidget {
-  const DividerSignIn({
+class DividerForm extends StatelessWidget {
+  const DividerForm({
     super.key,
     required this.dark,
   });
@@ -83,35 +52,48 @@ class DividerSignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(child: Divider(color: dark ? EcomColors.darkerGrey : EcomColors.grey, thickness: 0.5, indent: 60, endIndent: 5)),
-        Text(EcomTexts.orSignInWith.capitalize!, style: Theme.of(context).textTheme.labelMedium),
-        Flexible(child: Divider(color: dark ? EcomColors.darkerGrey : EcomColors.grey, thickness: 0.5, indent: 5, endIndent: 60)),
+        Flexible(
+            child: Divider(
+                color: dark ? EcomColors.darkerGrey : EcomColors.grey,
+                thickness: 0.5,
+                indent: 60,
+                endIndent: 5)),
+        Text(EcomTexts.orSignInWith.capitalize!,
+            style: Theme.of(context).textTheme.labelMedium),
+        Flexible(
+            child: Divider(
+                color: dark ? EcomColors.darkerGrey : EcomColors.grey,
+                thickness: 0.5,
+                indent: 5,
+                endIndent: 60)),
       ],
     );
   }
 }
 
 class FormFieldSignIn extends StatelessWidget {
-  final SignInController checkboxController = Get.put(SignInController());
-
-  // const FormFieldSignIn({
-  //   super.key,
-  // });
-
+  const FormFieldSignIn({
+    super.key,
+  });
+  // bool isChecked = false;
   @override
   Widget build(BuildContext context) {
+    final AuthScreenController controller = Get.put(AuthScreenController());
+    final TextEditingController emailController = TextEditingController();
+
     return Form(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: EcomSizes.spaceBtwSections),
+        padding:
+            const EdgeInsets.symmetric(vertical: EcomSizes.spaceBtwSections),
         child: Column(
           children: [
-
             // Email
             TextFormField(
+              controller: emailController,
               decoration: const InputDecoration(
                   prefixIcon: Icon(Iconsax.direct_right),
                   labelText: EcomTexts.email,
@@ -120,12 +102,26 @@ class FormFieldSignIn extends StatelessWidget {
             const SizedBox(height: EcomSizes.spaceBtwInputSignIn),
 
             //Password
-            TextFormField(
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Iconsax.password_check),
-                  labelText: EcomTexts.password,
-                  suffixIcon: Icon(Iconsax.eye_slash),
-                  border: InputBorder.none),
+            GetBuilder<AuthScreenController>(
+            builder: (controller) {
+              return TextFormField(
+                obscureText: /*false*/!controller.showPassword.value,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Iconsax.password_check),
+                    labelText: EcomTexts.password,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        print(controller.showPassword.value);
+                        controller.togglePasswordVisibility();
+                      },
+                      icon: Icon(
+                        controller.showPassword.value
+                            ? Iconsax.eye
+                            : Iconsax.eye_slash,),
+                    ),
+                    border: InputBorder.none),
+              );
+            }
             ),
             const SizedBox(height: EcomSizes.spaceBtwInputSignIn),
 
@@ -134,24 +130,33 @@ class FormFieldSignIn extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // RememberMe
-                CheckboxTheme(
-                    data: EcomCheckboxTheme.lightCheckboxTheme, child:
+
                 Row(
                   children: [
-                    Checkbox(
-                      value: checkboxController.isChecked.value,
-                        onChanged: (value) {
-                        print('test');
-                          checkboxController.toggleCheckbox();
-                        },
-                    activeColor: EcomColors.primary,),
+              GetBuilder<AuthScreenController>(
+              builder: (controller) {
+                    /*Obx(() => */return Checkbox(
+                      checkColor: Colors.white,
+                      fillColor: EcomCheckboxTheme.lightCheckboxTheme.fillColor,
+                      shape: EcomCheckboxTheme.lightCheckboxTheme.shape,
+                      value: controller.isChecked.value,
+                      onChanged: (bool? stateRememberMe) {
+                        // print(StateRememberMe);
+                        controller.toggleCheckbox();
+                      },
+                    );
+
+              }
+              ),
                     const Text(EcomTexts.rememberMe),
                   ],
                 ),
-                ),
+
                 //Forget Password
                 TextButton(
-                  onPressed: () {/*ForgotPasswordScreen()*/},
+                  onPressed: () {
+                    Get.to(() => ForgotPassScreen());
+                    },
                   child: const Text(
                     EcomTexts.forgetPassword,
                     textAlign: TextAlign.right,
@@ -168,8 +173,11 @@ class FormFieldSignIn extends StatelessWidget {
               height: EcomHelperFunctions.screenHeight() / 16,
               child: ElevatedButton(
                   onPressed: () {
+                    ///Firebase Action
+
+
                     // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginWithPassScreen()));
-                    print("Sign In Clicked");
+                    // print("Sign In Clicked");
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: EcomColors.buttonPrimary,
@@ -181,6 +189,7 @@ class FormFieldSignIn extends StatelessWidget {
                   child: const Text(
                     EcomTexts.signIn,
                     style: TextStyle(color: EcomColors.white),
+
                   )),
             ),
             const SizedBox(height: EcomSizes.spaceBtwItems),
@@ -192,10 +201,12 @@ class FormFieldSignIn extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 5),
+
+
             GestureDetector(
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                print("Create Account : clicked");
+                controller.GoSignUpPage();
+                // print("Create Account : clicked");
               },
               child: const Text(
                 EcomTexts.createAccount,
@@ -211,9 +222,7 @@ class FormFieldSignIn extends StatelessWidget {
 }
 
 class HeaderSignIn extends StatelessWidget {
-  const HeaderSignIn({super.key,
-  required this.dark
-  });
+  const HeaderSignIn({super.key, required this.dark});
 
   final bool dark;
 

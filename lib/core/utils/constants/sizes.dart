@@ -10,6 +10,11 @@ class EcomSizes{
   static const double spaceBtwItems = 16.0;
   static const double spaceBtwSections = 24.0;
 
+  //InputField
+  static const double spaceBtwInputFields = 16.0;
+  static const double spaceBtwCheckboxText = 7.0;
+
+
   // AppBar height
   static const double appBarHeight = 56.0;
 
